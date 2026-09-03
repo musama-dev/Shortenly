@@ -3,19 +3,19 @@ import { readLinks } from "../server/store.mjs";
 /**
  * Vercel serverless entry for clean short links on a .vercel.app (or custom)
  * domain. A request to /<alias> redirects (302) to the original destination,
- * exactly like a QR code. Unknown paths fall through to the SPA shell so the
- * app's client-side routes keep working.
+ * exactly like a QR code — with no intermediate page. Unknown paths bounce to
+ * the app root so the visitor never sees a dead "Redirecting…" screen.
  */
 export default async function handler(req, res) {
   const url = new URL(req.url, `http://${req.headers.host || "localhost"}`);
   const pathname = url.pathname;
 
-  // Serve the app shell directly (identical behaviour to a static host).
   const isAsset = /\.\w+$/.test(pathname);
+  const isApi = pathname.startsWith("/api/");
 
   try {
-    // Clean short link: /summer → redirect
-    if (!isAsset && pathname !== "/" && !pathname.startsWith("/api/")) {
+    // Clean short link: /summer → 302 to the original URL.
+    if (!isAsset && pathname !== "/" && !isApi) {
       const alias = decodeURIComponent(pathname.slice(1));
       const links = await readLinks();
       const link = links.find((l) => l.alias === alias);
@@ -26,25 +26,21 @@ export default async function handler(req, res) {
         res.end();
         return;
       }
+      // Not a short link: send the visitor to the app root instead of a dead page.
+      res.statusCode = 302;
+      res.setHeader("Location", "/");
+      res.setHeader("Cache-Control", "no-store");
+      res.end();
+      return;
     }
 
-    // App shell for client-side routes.
+    // Root / API / assets are handled by the static host — nothing to do here.
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.setHeader("Cache-Control", "no-store");
-    res.end(shellHtml());
-  } catch (err) {
-    res.statusCode = 500;
+    res.end("<!doctype html><html><body></body></html>");
+  } catch {
+    res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.end("<h1>Shortenly — something went wrong</h1>");
+    res.end("<!doctype html><html><body></body></html>");
   }
-}
-
-/* Minimal inline SPA shell so the function is self-contained (no fs dependency). */
-function shellHtml() {
-  return `<!doctype html>
-<html lang="en"><head><meta charset="UTF-8" /><title>Shortenly</title></head>
-<body><p>Redirecting…</p>
-<p>Visit the app at the site root. If you meant a short link, it may have been removed.</p>
-</body></html>`;
 }
