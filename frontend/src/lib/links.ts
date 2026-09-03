@@ -64,7 +64,7 @@ export const demoLinks: Link[] = ALIASES.map((a, i) => ({
   devices: DEVICES,
 }));
 
-export function makeAlias(len = 6): string {
+export function makeAlias(len = 4): string {
   const chars = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   return Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
 }

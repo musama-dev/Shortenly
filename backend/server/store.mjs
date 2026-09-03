@@ -107,7 +107,7 @@ export async function writeLinks(links) {
   }
 }
 
-export function makeAlias(len = 6) {
+export function makeAlias(len = 4) {
   const chars = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   return Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
 }

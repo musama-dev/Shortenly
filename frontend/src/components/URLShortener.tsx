@@ -23,7 +23,7 @@ export function URLShortener({ onCreated }: { onCreated?: (l: Link) => void }) {
     setPhase("loading");
     // Simulated network latency — replace with real API call.
     window.setTimeout(() => {
-      const link = createLink(normalized, { alias: makeAlias(6) });
+      const link = createLink(normalized, { alias: makeAlias() });
       registerLink(link);
       setResult(link);
       setPhase("done");
