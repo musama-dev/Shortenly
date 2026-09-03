@@ -7,7 +7,7 @@ import { seedLinks } from "../api/links-seed.mjs";
  * dev middleware (frontend/vite.config.ts), and the Vercel functions.
  *
  * Persistence strategy (first available wins):
- *  1. Vercel Blob  — BLOB_READ_WRITE_TOKEN set (recommended on Vercel).
+ *  1. Vercel Blob (@vercel/blob SDK) — BLOB_READ_WRITE_TOKEN set (recommended on Vercel).
  *  2. Vercel KV / Upstash (REST) — KV_REST_API_URL/…TOKEN or UPSTASH_*.
  *  3. JSON file — local dev / Node server (falls back to bundled seed).
  */
@@ -16,9 +16,6 @@ export const DATA_PATH = fileURLToPath(DATA_URL);
 
 const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
 const BLOB_KEY = "links.json";
-const BLOB_URL =
-  process.env.SHORTENLY_BLOB_URL ||
-  "https://u6dnjyxg4mk7qnn1.private.blob.vercel-storage.com";
 
 const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -32,34 +29,30 @@ async function tryRead(path) {
   }
 }
 
-/* --- Vercel Blob helpers -------------------------------------------------- */
+/* --- Vercel Blob helpers (@vercel/blob SDK) ------------------------------- */
 
 async function blobGet() {
+  const { head } = await import("@vercel/blob");
   try {
-    const res = await fetch(`${BLOB_URL}/${BLOB_KEY}`, {
+    const meta = await head(BLOB_KEY);
+    const res = await fetch(meta.downloadUrl ?? meta.url, {
       headers: { Authorization: `Bearer ${BLOB_TOKEN}` },
     });
     if (!res.ok) return null;
     const text = await res.text();
     return text ? JSON.parse(text) : null;
   } catch {
-    return null;
+    return null; // not uploaded yet, or blob unreachable — fall back
   }
 }
 
 async function blobSet(links) {
-  const body = new FormData();
-  body.append(
-    "file",
-    new Blob([JSON.stringify(links)], { type: "application/json" }),
-    BLOB_KEY,
-  );
-  const res = await fetch(`${BLOB_URL}`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${BLOB_TOKEN}` },
-    body,
+  const { put } = await import("@vercel/blob");
+  await put(BLOB_KEY, JSON.stringify(links), {
+    access: "private",
+    allowOverwrite: true,
+    contentType: "application/json",
   });
-  if (!res.ok) throw new Error(`blob put failed: ${res.status}`);
 }
 
 /* --- KV (Vercel / Upstash) REST helpers ----------------------------------- */
