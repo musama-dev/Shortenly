@@ -1,0 +1,19 @@
+.qr {
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
+  padding: var(--space-8); text-align: center;
+}
+.qr__frame {
+  padding: var(--space-4);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.qr__url { font-size: 16px; font-weight: 550; letter-spacing: -0.01em; }
+.qr__actions { display: flex; gap: var(--space-3); }
+.qr__btn {
+  height: 34px; padding: 0 var(--space-4);
+  background: var(--bg-elevated); border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 500; color: var(--text-primary); cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.qr__btn:hover { background: var(--bg-hover); }

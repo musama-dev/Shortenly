@@ -1,0 +1,72 @@
+/* ─── Shortenly design tokens ─────────────────────────────── */
+:root {
+  /* Spacing scale */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px;
+  --space-4: 16px; --space-5: 20px; --space-6: 24px;
+  --space-8: 32px; --space-10: 40px; --space-12: 48px;
+  --space-16: 64px; --space-20: 80px; --space-24: 96px; --space-32: 128px;
+
+  /* Radius */
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px; --radius-xl: 20px; --radius-full: 9999px;
+
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 150ms;
+  --dur-med: 250ms;
+  --dur-slow: 400ms;
+
+  /* Z-index */
+  --z-nav: 100; --z-modal: 200; --z-tooltip: 300;
+
+  /* Breakpoints (reference only — used in JS/media queries) */
+  --bp-sm: 640px; --bp-md: 768px; --bp-lg: 1024px; --bp-xl: 1280px;
+}
+
+/* ─── Light mode ─── */
+[data-theme="light"], :root {
+  --bg: #fafaf9;              /* warm paper */
+  --bg-elevated: #ffffff;
+  --bg-subtle: #f5f5f4;
+  --bg-hover: rgba(0, 0, 0, 0.03);
+  --text-primary: #18181b;
+  --text-secondary: #71717a;
+  --text-tertiary: #a1a1aa;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.14);
+  --accent: #18181b;          /* near-black as accent — Vercel-like restraint */
+  --accent-text: #ffffff;
+  --accent-hover: #27272a;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --success: #16a34a;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ─── Dark mode ─── */
+[data-theme="dark"] {
+  --bg: #131313;
+  --bg-elevated: #1c1c1c;
+  --bg-subtle: #171717;
+  --bg-hover: rgba(255, 255, 255, 0.05);
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-tertiary: #71717a;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --accent: #fafafa;
+  --accent-text: #131313;
+  --accent-hover: #e4e4e7;
+  --danger: #f87171;
+  --danger-bg: rgba(220, 38, 38, 0.10);
+  --success: #4ade80;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.35);
+}

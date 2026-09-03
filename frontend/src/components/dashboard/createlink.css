@@ -1,0 +1,16 @@
+.create { display: flex; flex-direction: column; gap: var(--space-5); }
+.create__advanced {
+  display: flex; align-items: center; gap: var(--space-2);
+  background: none; border: none; padding: 0; cursor: pointer;
+  font-size: 13px; font-weight: 500; color: var(--text-secondary);
+  transition: color var(--dur-fast) var(--ease-out);
+  align-self: flex-start;
+}
+.create__advanced:hover { color: var(--text-primary); }
+.create__advanced-body { display: flex; flex-direction: column; gap: var(--space-5); padding-top: var(--space-2); animation: fadeInUp var(--dur-med) var(--ease-out); }
+.create__select {
+  height: 38px; padding: 0 var(--space-3);
+  background: var(--bg-elevated); border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  color: var(--text-primary); font-size: 14px; cursor: pointer;
+}
+.create__select:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 1px; }
