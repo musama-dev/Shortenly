@@ -7,7 +7,7 @@
 Turn long URLs into short, memorable links — with a powerful analytics
 dashboard and QR codes. Think bit.ly, but self-hostable and yours.
 
-[![Live Demo](https://img.shields.io/badge/→_Live_Demo-shortenly--ten.vercel.app-blue?style=for-the-badge)](https://shortenly-ten.vercel.app)
+[![Live Demo](https://img.shields.io/badge/→_Live_Demo-shortenlyy.vercel.app-blue?style=for-the-badge)](https://shortenlyy.vercel.app)
 
 ![React](https://img.shields.io/badge/React_19-20232a?style=flat-square&logo=react&logoColor=61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
