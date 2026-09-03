@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
 import { normalizeUrl, createLink, makeAlias, shortUrl, registerLink, type Link } from "../lib/links";
 import { Button } from "./ui/Button";
-import { ArrowRight, Check, Copy } from "./icons";
+import { QrMode } from "./qr";
+import { ArrowRight, Check, Copy, QrCode } from "./icons";
 import "./urlshortener.css";
 
 type Phase = "idle" | "loading" | "done";
@@ -12,6 +13,7 @@ export function URLShortener({ onCreated }: { onCreated?: (l: Link) => void }) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<Link | null>(null);
   const [copied, setCopied] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const submit = () => {
@@ -50,11 +52,15 @@ export function URLShortener({ onCreated }: { onCreated?: (l: Link) => void }) {
           <Button onClick={copy} icon={copied ? <Check /> : <Copy />}>
             {copied ? "Copied" : "Copy"}
           </Button>
+          <Button variant="secondary" onClick={() => setQrOpen(true)} icon={<QrCode />}>
+            QR Mode
+          </Button>
           <Button variant="ghost" onClick={reset}>Shorten another</Button>
         </div>
         <div className="shortener__meta">
           <span>Destination · {result.destination.replace(/^https?:\/\//, "").slice(0, 48)}…</span>
         </div>
+        <QrMode alias={result.alias} open={qrOpen} onClose={() => setQrOpen(false)} />
       </div>
     );
   }

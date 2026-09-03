@@ -1,0 +1,60 @@
+/* ─── Scroll-motion primitives ─────────────────────────────── */
+
+/* Reveal: element fades/rises into view when scrolled to.
+ * `data-reveal` marks the element; `.is-inview` triggers the transition.
+ * Direction and distance are set via data attributes:
+ *   data-reveal="up" | "fade" | "scale" | "left" | "right"
+ *   data-reveal-delay="120"  (ms)
+ *   data-reveal-distance="24" (px)  */
+[data-reveal] {
+  opacity: 0;
+  will-change: opacity, transform;
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal="up"]    { transform: translate3d(0, var(--reveal-distance, 24px), 0); }
+[data-reveal="left"]  { transform: translate3d(var(--reveal-distance, 24px), 0, 0); }
+[data-reveal="right"] { transform: translate3d(calc(var(--reveal-distance, 24px) * -1), 0, 0); }
+[data-reveal="scale"] { transform: scale3d(0.96, 0.96, 1); }
+[data-reveal].is-inview {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+}
+
+/* After the entrance completes, drop the will-change hint. */
+[data-reveal].is-inview:not(:hover):not(:focus-within) { will-change: auto; }
+
+/* Stagger helper: children get increasing delays automatically. */
+[data-reveal-stagger] > [data-reveal]:nth-child(1) { --reveal-delay: 0ms; }
+[data-reveal-stagger] > [data-reveal]:nth-child(2) { --reveal-delay: 90ms; }
+[data-reveal-stagger] > [data-reveal]:nth-child(3) { --reveal-delay: 180ms; }
+[data-reveal-stagger] > [data-reveal]:nth-child(4) { --reveal-delay: 270ms; }
+[data-reveal-stagger] > [data-reveal]:nth-child(5) { --reveal-delay: 360ms; }
+[data-reveal-stagger] > [data-reveal]:nth-child(6) { --reveal-delay: 450ms; }
+
+/* Mask reveal for large visuals — clip-path wipes upward. */
+[data-reveal="mask"] {
+  clip-path: inset(12% 0 12% 0 round var(--radius-xl));
+  transform: scale3d(1.04, 1.04, 1);
+  transition:
+    clip-path 900ms var(--ease-out),
+    transform 900ms var(--ease-out),
+    opacity 600ms var(--ease-out);
+}
+[data-reveal="mask"].is-inview {
+  clip-path: inset(0 0 0 0 round var(--radius-xl));
+  transform: scale3d(1, 1, 1);
+}
+
+/* Reduced motion: everything simply appears. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal="mask"] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
+  }
+}

@@ -33,3 +33,4 @@ Thumbs.db
 # Tooling runtime metadata (local, never committed)
 .freebuff/
 .vercel
+.env*
