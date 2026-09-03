@@ -14,7 +14,7 @@ import { seedLinks } from "../api/links-seed.mjs";
 export const DATA_URL = new URL("../data/links.json", import.meta.url);
 export const DATA_PATH = fileURLToPath(DATA_URL);
 
-const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
+const BLOB_TOKEN = (process.env.BLOB_READ_WRITE_TOKEN || "").replace(/^["']+|["']+$/g, "");
 const BLOB_KEY = "links.json";
 
 const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
