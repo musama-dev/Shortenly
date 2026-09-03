@@ -1,5 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { seedLinks } from "../api/links-seed.mjs";
 
 /**
  * Shared data access used by both the Node server (server/index.mjs),
@@ -12,7 +13,6 @@ import { fileURLToPath } from "node:url";
  */
 export const DATA_URL = new URL("../data/links.json", import.meta.url);
 export const DATA_PATH = fileURLToPath(DATA_URL);
-const SEED_PATH = fileURLToPath(new URL("../api/links-seed.json", import.meta.url));
 
 async function tryRead(path) {
   try {
@@ -23,7 +23,7 @@ async function tryRead(path) {
 }
 
 export async function readLinks() {
-  return (await tryRead(DATA_PATH)) ?? (await tryRead(SEED_PATH)) ?? [];
+  return (await tryRead(DATA_PATH)) ?? seedLinks;
 }
 
 export async function writeLinks(links) {

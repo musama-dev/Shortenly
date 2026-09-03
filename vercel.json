@@ -2,13 +2,13 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "buildCommand": "npm run build --workspace frontend",
-  "outputDirectory": "frontend/dist",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/:path*" },
     { "source": "/:path*", "destination": "/api/redirect" }
   ],
   "functions": {
-    "backend/api/redirect.js": { "maxDuration": 10 },
-    "backend/api/links.js": { "maxDuration": 10 }
+    "api/links.js": { "maxDuration": 10 },
+    "api/redirect.js": { "maxDuration": 10 }
   }
 }
