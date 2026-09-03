@@ -2,6 +2,8 @@
   "name": "shortenly",
   "private": true,
   "version": "1.0.0",
+  "description": "Shortenly — a self-hostable URL shortener with analytics and QR codes.",
+  "license": "MIT",
   "type": "module",
   "workspaces": [
     "frontend",
