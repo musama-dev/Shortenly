@@ -6,15 +6,19 @@ import { seedLinks } from "../api/links-seed.mjs";
  * Shared data access used by the Node server (server/index.mjs), the Vite
  * dev middleware (frontend/vite.config.ts), and the Vercel functions.
  *
- * Persistence strategy:
- *  - Vercel KV / Upstash (REST) when KV_REST_API_URL + KV_REST_API_TOKEN
- *    (or UPSTASH_REDIS_REST_*) are set. This survives serverless cold starts,
- *    so links created at runtime resolve on the live site.
- *  - Otherwise the JSON file. Reads fall back to the bundled seed copy so the
- *    seed links always work.
+ * Persistence strategy (first available wins):
+ *  1. Vercel Blob  — BLOB_READ_WRITE_TOKEN set (recommended on Vercel).
+ *  2. Vercel KV / Upstash (REST) — KV_REST_API_URL/…TOKEN or UPSTASH_*.
+ *  3. JSON file — local dev / Node server (falls back to bundled seed).
  */
 export const DATA_URL = new URL("../data/links.json", import.meta.url);
 export const DATA_PATH = fileURLToPath(DATA_URL);
+
+const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
+const BLOB_KEY = "links.json";
+const BLOB_URL =
+  process.env.SHORTENLY_BLOB_URL ||
+  "https://u6dnjyxg4mk7qnn1.private.blob.vercel-storage.com";
 
 const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -28,7 +32,37 @@ async function tryRead(path) {
   }
 }
 
-/* --- KV (Vercel / Upstash) REST helpers ---------------------------------- */
+/* --- Vercel Blob helpers -------------------------------------------------- */
+
+async function blobGet() {
+  try {
+    const res = await fetch(`${BLOB_URL}/${BLOB_KEY}`, {
+      headers: { Authorization: `Bearer ${BLOB_TOKEN}` },
+    });
+    if (!res.ok) return null;
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
+  } catch {
+    return null;
+  }
+}
+
+async function blobSet(links) {
+  const body = new FormData();
+  body.append(
+    "file",
+    new Blob([JSON.stringify(links)], { type: "application/json" }),
+    BLOB_KEY,
+  );
+  const res = await fetch(`${BLOB_URL}`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${BLOB_TOKEN}` },
+    body,
+  });
+  if (!res.ok) throw new Error(`blob put failed: ${res.status}`);
+}
+
+/* --- KV (Vercel / Upstash) REST helpers ----------------------------------- */
 
 async function kvGet() {
   try {
@@ -55,14 +89,20 @@ async function kvSet(links) {
   }
 }
 
+const hasBlob = Boolean(BLOB_TOKEN);
 const hasKV = Boolean(KV_URL && KV_TOKEN);
 
 export async function readLinks() {
+  if (hasBlob) return (await blobGet()) ?? seedLinks;
   if (hasKV) return (await kvGet()) ?? seedLinks;
   return (await tryRead(DATA_PATH)) ?? seedLinks;
 }
 
 export async function writeLinks(links) {
+  if (hasBlob) {
+    await blobSet(links);
+    return;
+  }
   if (hasKV) {
     await kvSet(links);
     return;
@@ -70,7 +110,7 @@ export async function writeLinks(links) {
   try {
     await writeFile(DATA_PATH, JSON.stringify(links, null, 2), "utf8");
   } catch {
-    /* Ephemeral filesystem (Vercel, no KV): runtime links last the invocation. */
+    /* Ephemeral filesystem (Vercel, no storage): runtime links last the invocation. */
   }
 }
 
