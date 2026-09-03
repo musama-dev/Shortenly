@@ -1,8 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="880" height="360" viewBox="0 0 880 360" font-family="Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 360" font-family="Segoe UI, Arial, sans-serif">
   <defs>
-    <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
-    </marker>
     <linearGradient id="hdr3" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#0f172a"/>
       <stop offset="1" stop-color="#1e3a8a"/>
@@ -11,29 +8,28 @@
 
   <rect width="880" height="360" fill="#f8fafc"/>
   <rect x="0" y="0" width="880" height="64" fill="url(#hdr3)"/>
-  <text x="24" y="40" fill="#ffffff" font-size="22" font-weight="650">Shortenly — Repository Structure</text>
+  <text x="440" y="41" text-anchor="middle" fill="#ffffff" font-size="24" font-weight="650">Shortenly — Repository Structure</text>
 
   <!-- frontend box -->
-  <rect x="40" y="96" width="380" height="220" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-  <text x="60" y="126" font-size="16" font-weight="650" fill="#1d4ed8">frontend/</text>
-  <text x="60" y="152" font-size="12" fill="#334155">src/ ………… React app (pages, components, lib)</text>
-  <text x="60" y="176" font-size="12" fill="#334155">public/ ……… favicon &amp; static assets</text>
-  <text x="60" y="200" font-size="12" fill="#334155">index.html …… app shell</text>
-  <text x="60" y="224" font-size="12" fill="#334155">vite.config.ts … dev backend middleware</text>
-  <text x="60" y="248" font-size="12" fill="#334155">tsconfig*.json … TypeScript config</text>
-  <text x="60" y="290" font-size="11" fill="#64748b">npm run dev · npm run build</text>
+  <rect x="40" y="96" width="384" height="216" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="62" y="128" font-size="17" font-weight="650" fill="#1d4ed8">frontend/</text>
+  <text x="62" y="156" font-size="13" fill="#334155">src/ ………… React app (pages, components)</text>
+  <text x="62" y="180" font-size="13" fill="#334155">public/ …… favicon &amp; static assets</text>
+  <text x="62" y="204" font-size="13" fill="#334155">index.html …… app shell</text>
+  <text x="62" y="228" font-size="13" fill="#334155">vite.config.ts … dev redirect middleware</text>
+  <text x="62" y="252" font-size="13" fill="#334155">tsconfig*.json … TypeScript config</text>
+  <text x="62" y="288" font-size="12" fill="#64748b">npm run dev · npm run build</text>
 
   <!-- backend box -->
-  <rect x="460" y="96" width="380" height="220" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
-  <text x="480" y="126" font-size="16" font-weight="650" fill="#15803d">backend/</text>
-  <text x="480" y="152" font-size="12" fill="#334155">server/index.mjs … Node http server (VPS)</text>
-  <text x="480" y="176" font-size="12" fill="#334155">server/store.mjs … shared data access</text>
-  <text x="480" y="200" font-size="12" fill="#334155">api/links.js …… Vercel function (list/create)</text>
-  <text x="480" y="224" font-size="12" fill="#334155">api/redirect.js … Vercel function (302)</text>
-  <text x="480" y="248" font-size="12" fill="#334155">data/links.json … link registry</text>
-  <text x="480" y="290" font-size="11" fill="#64748b">npm run serve</text>
+  <rect x="456" y="96" width="384" height="216" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="478" y="128" font-size="17" font-weight="650" fill="#15803d">backend/</text>
+  <text x="478" y="156" font-size="13" fill="#334155">server/index.mjs … Node http server (VPS)</text>
+  <text x="478" y="180" font-size="13" fill="#334155">server/store.mjs … shared data access</text>
+  <text x="478" y="204" font-size="13" fill="#334155">api/links.js …… Vercel fn (list / create)</text>
+  <text x="478" y="228" font-size="13" fill="#334155">api/redirect.js … Vercel fn (302)</text>
+  <text x="478" y="252" font-size="13" fill="#334155">data/links.json … link registry</text>
+  <text x="478" y="288" font-size="12" fill="#64748b">npm run serve</text>
 
   <!-- root strip -->
-  <rect x="40" y="336" width="0" height="0" fill="none"/>
-  <text x="440" y="342" text-anchor="middle" font-size="12" fill="#64748b">root: package.json (workspaces) · vercel.json · docs/</text>
+  <text x="440" y="340" text-anchor="middle" font-size="13" fill="#64748b">root: package.json (workspaces) · vercel.json · docs/</text>
 </svg>

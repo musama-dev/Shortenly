@@ -1,14 +1,25 @@
-# Shortenly
+<div align="center">
 
-<p align="center">
-  <img src="https://img.shields.io/badge/React_19-20232a?style=flat-square&logo=react&logoColor=61dafb" alt="React 19" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Vite_8-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
-  <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node" />
-  <img src="https://img.shields.io/badge/Vercel-black?style=flat-square&logo=vercel&logoColor=white" alt="Vercel" />
-</p>
+# ✂️ Shortenly
 
-**Shortenly** is a full-stack URL shortener — turn long URLs into short, memorable links with a beautiful analytics dashboard and QR codes. Think bit.ly, but self-hostable and yours.
+**Short links. Beautifully simple.**
+
+Turn long URLs into short, memorable links — with a powerful analytics
+dashboard and QR codes. Think bit.ly, but self-hostable and yours.
+
+[![Live Demo](https://img.shields.io/badge/→_Live_Demo-shortenly--ten.vercel.app-blue?style=for-the-badge)](https://shortenly-ten.vercel.app)
+
+![React](https://img.shields.io/badge/React_19-20232a?style=flat-square&logo=react&logoColor=61dafb)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite_8-646CFF?style=flat-square&logo=vite&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-black?style=flat-square&logo=vercel&logoColor=white)
+
+</div>
+
+---
+
+## ✨ Features
 
 - 🔗 **Clean short links** — `https://your-domain/alias` → instant `302` redirect
 - 📊 **Analytics dashboard** — clicks, referrers, countries, devices, 30-day trends
@@ -16,13 +27,13 @@
 - ⚙️ **Custom aliases** — brand your links (`/summer`, `/launch`) or auto-generate them
 - 🚀 **Three runtimes, one codebase** — Vite dev middleware, Node server, or Vercel serverless
 
-## Architecture
+## 🏗️ Architecture
 
 Shortenly is an npm-workspaces monorepo with a React frontend and a Node backend that share a single JSON link registry.
 
 ![System architecture](docs/architecture.svg)
 
-## How a request flows
+## 🔄 How a Request Flows
 
 ![Request data flow](docs/dataflow.svg)
 
@@ -30,7 +41,7 @@ Shortenly is an npm-workspaces monorepo with a React frontend and a Node backend
 2. **Redirect** — a visitor hitting `/alias` gets looked up in the store and answered with `302 Location: <destination>`. Disabled links fall through to the app shell instead.
 3. **SPA** — unknown paths serve the app shell so client-side routes (landing, dashboard, analytics) keep working.
 
-## Repository structure
+## 📁 Repository Structure
 
 ![Repository structure](docs/structure.svg)
 
@@ -61,7 +72,7 @@ Shortenly/
 └── vercel.json             # Monorepo build + function wiring
 ```
 
-## Quick start
+## 🚀 Quick Start
 
 Requires Node 18+.
 
@@ -92,7 +103,7 @@ HTTP/1.1 302 Found
 Location: https://example.com/campaigns/summer-sale-2026
 ```
 
-## API
+## 🔌 API
 
 | Method | Endpoint      | Description                                             |
 | ------ | ------------- | ------------------------------------------------------- |
@@ -120,7 +131,7 @@ curl -i http://localhost:3030/launch   # 302 → destination
 
 Links with `"status": "disabled"` are never redirected — the request falls through to the app shell.
 
-## Configuration
+## ⚙️ Configuration
 
 | Variable        | Where    | Purpose                                                                 |
 | --------------- | -------- | ----------------------------------------------------------------------- |
@@ -128,7 +139,7 @@ Links with `"status": "disabled"` are never redirected — the request falls thr
 | `HOST`          | backend  | Bind address for the Node server (default `0.0.0.0`).                   |
 | `DIST_DIR`      | backend  | Override the frontend build directory (default `frontend/dist`).        |
 
-## Deployment
+## ☁️ Deployment
 
 ### Vercel (recommended)
 
@@ -154,7 +165,7 @@ HOST=0.0.0.0 npm run serve          # listens on :3030
 
 Point your domain's DNS at the server and build with `VITE_BASE_URL=https://sho.example.edu` to brand the generated links.
 
-## Tech stack
+## 🧰 Tech Stack
 
 | Layer    | Choice                                                          |
 | -------- | --------------------------------------------------------------- |
@@ -163,6 +174,6 @@ Point your domain's DNS at the server and build with `VITE_BASE_URL=https://sho.
 | Storage  | JSON file registry (`backend/data/links.json`)                   |
 | Tooling  | npm workspaces, Oxlint                                           |
 
-## License
+## 📄 License
 
 MIT
