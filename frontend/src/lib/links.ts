@@ -98,7 +98,7 @@ export function createLink(destination: string, opts?: { alias?: string; title?:
   };
 }
 
-export const SHORT_DOMAIN = "sho.rt";
+export const SHORT_DOMAIN = "srt01.vercel.app";
 
 /**
  * The shareable short URL — always a clean `{origin}/alias` that the backend
@@ -112,7 +112,9 @@ export const SHORT_DOMAIN = "sho.rt";
  * Set VITE_BASE_URL (e.g. https://sho.university.edu) to use a custom domain.
  */
 export const shortUrl = (alias: string) => {
-  const base = (import.meta.env.VITE_BASE_URL as string | undefined)?.replace(/\/$/, "") || window.location.origin;
+  const base =
+    (import.meta.env.VITE_BASE_URL as string | undefined)?.replace(/\/$/, "") ||
+    `https://${SHORT_DOMAIN}`;
   return `${base}/${alias}`;
 };
 
