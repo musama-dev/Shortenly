@@ -64,7 +64,7 @@ export const demoLinks: Link[] = ALIASES.map((a, i) => ({
   devices: DEVICES,
 }));
 
-export function makeAlias(len = 4): string {
+export function makeAlias(len = Number(import.meta.env.VITE_ALIAS_LENGTH as string) || 3): string {
   const chars = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   return Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
 }
@@ -143,7 +143,27 @@ export function registerLink(link: Link) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ alias: link.alias, title: link.title, destination: link.destination }),
-  }).catch(() => {});
+  })
+    .then(async (res) => {
+      /* Short aliases collide occasionally — retry with a fresh one. */
+      if (res.status === 409) {
+        for (let i = 0; i < 5; i++) {
+          const retry = { ...link, alias: makeAlias() };
+          const r = await fetch("/api/links", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ alias: retry.alias, title: retry.title, destination: retry.destination }),
+          });
+          if (r.ok) {
+            const idx = created.indexOf(link);
+            if (idx !== -1) created[idx] = retry;
+            saveCreated();
+            return;
+          }
+        }
+      }
+    })
+    .catch(() => {});
 }
 
 export function allLinks(): Link[] {
